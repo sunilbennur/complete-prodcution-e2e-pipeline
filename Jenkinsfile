@@ -8,6 +8,7 @@ pipeline{
     environment {
         APP_NAME = "complete-prodcution-e2e-pipeline"
         RELEASE = "1.0.0"
+        registry = "550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo"
         //DOCKER_USER = "dmancloud"
         //DOCKER_PASS = 'dockerhub'
         //IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
@@ -64,20 +65,20 @@ pipeline{
 
         }
 
-        stage("Build & Push Docker Image") {
+       stage ('Docker build') {
             steps {
                 script {
-                    docker.withRegistry('',DOCKER_PASS) {
-                        docker_image = docker.build "${IMAGE_NAME}"
-                    }
-
-                    docker.withRegistry('',DOCKER_PASS) {
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push('latest')
-                    }
+                    dockerImage = docker.build registry
                 }
             }
-
+        } 
+        stage('Pushing image to ECR') {
+            steps{  
+                script {
+                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 550238591544.dkr.ecr.us-east-1.amazonaws.com'
+                    sh 'docker push 550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo:latest'
+                }
+            }
         }
 
         stage("Trivy Scan") {
