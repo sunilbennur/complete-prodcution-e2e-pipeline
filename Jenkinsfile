@@ -87,7 +87,7 @@ pipeline{
        stage ('Docker build') {
             steps {
                 script {
-                    dockerImage = docker.build "${IMAGE_NAME}"
+                    dockerImage = docker.build registry
                 }
             }
         } 
@@ -95,7 +95,7 @@ pipeline{
             steps{  
                 script {
                     sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 550238591544.dkr.ecr.us-east-1.amazonaws.com'
-                    sh 'docker push "${IMAGE_NAME}":latest'
+                    sh 'docker push 550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo:latest'
                 }
             }
         }
@@ -112,8 +112,8 @@ pipeline{
         stage ('Cleanup Artifacts') {
             steps {
                 script {
-                    sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker rmi ${IMAGE_NAME}:latest"
+                    sh "docker rmi 550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo"
+                    sh "docker rmi 550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo:latest"
                 }
             }
         }
