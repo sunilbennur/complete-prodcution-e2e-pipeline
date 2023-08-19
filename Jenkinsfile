@@ -14,9 +14,28 @@ pipeline{
         //IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         //IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
         //JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
+	
+	// Using returnStdout
+        CC = """${sh(
+                returnStdout: true,
+                script: 'echo "clang"'
+            )}""" 
+        // Using returnStatus
+        EXIT_STATUS = """${sh(
+                returnStatus: true,
+                script: 'exit 1'
+            ) }"""
 
     }
     stages{
+	stage('Environment Setup') {
+            environment {
+                DEBUG_FLAGS = '-g'
+            }
+            steps {
+                sh 'printenv'
+            }
+        }
         stage("Cleanup Workspace"){
             steps {
                 cleanWs()
