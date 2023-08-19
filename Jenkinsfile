@@ -113,7 +113,7 @@ pipeline{
             steps {
                 script {
                     sh "docker rmi 550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo"
-                    sh "docker rmi 550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo:latest"
+                    //sh "docker rmi 550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo:latest"
                 }
             }
         }
@@ -134,12 +134,12 @@ pipeline{
         failure {
             emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
                     subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Failed", 
-                    mimeType: 'text/html',to: "dmistry@yourhostdirect.com"
+                    mimeType: 'text/html',to: "sunilbennur25@gmail.com"
             }
          success {
                emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
                     subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
-                    mimeType: 'text/html',to: "dmistry@yourhostdirect.com"
+                    mimeType: 'text/html',to: "sunilbennur25@gmail.com"
           }      
     }
 }
