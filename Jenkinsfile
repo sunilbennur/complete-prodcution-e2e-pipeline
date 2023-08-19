@@ -9,10 +9,10 @@ pipeline{
         APP_NAME = "complete-prodcution-e2e-pipeline"
         RELEASE = "1.0.0"
         registry = "550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo"
-        //DOCKER_USER = "dmancloud"
-        //DOCKER_PASS = 'dockerhub'
-        //IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
-        //IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+        DOCKER_USER = "sunilbennur"
+        DOCKER_PASS = 'bennur'
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
         //JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
 	
 	// Using returnStdout
@@ -87,7 +87,7 @@ pipeline{
        stage ('Docker build') {
             steps {
                 script {
-                    dockerImage = docker.build registry
+                    dockerImage = docker.build "${IMAGE_NAME}"
                 }
             }
         } 
@@ -95,7 +95,7 @@ pipeline{
             steps{  
                 script {
                     sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 550238591544.dkr.ecr.us-east-1.amazonaws.com'
-                    sh 'docker push 550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo:latest'
+                    sh 'docker push "${IMAGE_NAME}":latest'
                 }
             }
         }
