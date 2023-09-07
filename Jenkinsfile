@@ -9,7 +9,7 @@ pipeline{
         APP_NAME = "complete-prodcution-e2e-pipeline"
         RELEASE = "1.0.0"
         registry = "550238591544.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo"
-        DOCKER_USER = "sunilbennur"
+        DOCKER_USER = "sunil"
         DOCKER_PASS = 'bennur'
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
